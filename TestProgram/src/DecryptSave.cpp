@@ -47,9 +47,9 @@ void choose(SaveFileBlocks &file_data, const char* file_name, const u8 type)
 		}
 
 		encrypt = new Encrypt(&file_data, &saveThings);
-		decrypt = new Decrypt(&file_data,&saveThings);
 
 		encrypt->run_process();
+		decrypt = new Decrypt(&file_data,&saveThings);
 		decrypt->run_process();
 		encrypt->run_process();
 
@@ -59,8 +59,6 @@ void choose(SaveFileBlocks &file_data, const char* file_name, const u8 type)
 			break;
 		}
 
-		delete encrypt;
-		delete decrypt;
 		LOG_STRING_NL("Successfully Encrypted!");
 		break; 
 	default:

@@ -4,7 +4,7 @@ void inheritance::create_hash_for_decryption()
 {
 	s32 counter = 0;
 
-	buffer_to_hash = new u32[128];
+	buffer_to_hash = new u32[32];
 
 	hash_crypt = reinterpret_cast<u8*>(buffer_to_hash);
 
