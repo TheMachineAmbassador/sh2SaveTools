@@ -28,15 +28,12 @@ void Encrypt::encrypt_data() const
 		saveFileThings->DAT_0093c008 = saveFileThings->DAT_0093c008 - (file_data_buffer[0] & 0xff) - (file_data_buffer[0] >> 8 & 0xff) - ((file_data_buffer[0] >> 8 & 0xff00) >> 8) - (file_data_buffer[0] >> 0x18)
 			- (file_data_buffer[1] & 0xff) - (file_data_buffer[1] >> 8 & 0xff) - (file_data_buffer[1] >> 0x10 & 0xff) - (file_data_buffer[1] >> 0x18);
 
-		file_data_buffer = file_data_buffer + 2;
 		decrypt_end_counter = decrypt_end_counter - 1;
 		if (decrypt_end_counter < 1) {
 			break;
 		}
+		file_data_buffer = file_data_buffer + 2;
 	}
-	std::cout << "Hash location: " << saveFileThings->hash_location << std::endl;
-	std::cout << "93c008: " << saveFileThings->DAT_0093c008 << std::endl;
-	std::cout << "uVar10: " << saveFileThings->uVar10 << std::endl;
 
 	const s8 bVar4 = static_cast<s8>(saveFileThings->hash_location) & 0x1f;
 	const u32 get_encryption_spot = saveFileThings->hash_location - saveFileThings->DAT_0093c008 - saveFileThings->uVar10;
@@ -49,12 +46,16 @@ void Encrypt::encrypt_data() const
 	saveFileThings->INT_0093c000 = saveFileThings->hash_location % 0x3f8;
 	saveFileThings->counter_for_loops = saveFileThings->hash_location % 0x3f8;
 
+#if _DEBUG
+	std::cout << "Hash location: " << saveFileThings->hash_location << std::endl;
+	std::cout << "0x93c008: " << saveFileThings->DAT_0093c008 << std::endl;
+	std::cout << "uVar10: " << saveFileThings->uVar10 << std::endl;
 	std::cout << "File header: " << fileData->file_header << std::endl;
 	std::cout << "fileData->save_file_after_four_byte: " << fileData->save_file_after_four_byte << std::endl;
 	std::cout << "fileData->UINT_009361f8: " << fileData->UINT_009361f8 << std::endl;
 	std::cout << "saveFileThings->points_To_Save_File_After_8_Byte: "<< saveFileThings->points_To_Save_File_After_8_Byte << std::endl;
 	std::cout << "saveFileThings->counter_for_loops: " << saveFileThings->counter_for_loops << std::endl;
-
+#endif
 }
 
 void Encrypt::move_hashes_to_first_byte() const
