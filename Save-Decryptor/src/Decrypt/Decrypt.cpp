@@ -1,5 +1,7 @@
-#include "PreHeader.h"
 #include "Decrypt.h"
+
+#include <cstring>
+#include "typedef.h"
 
 void Decrypt::get_hash() const
 {

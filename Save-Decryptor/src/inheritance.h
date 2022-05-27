@@ -1,5 +1,8 @@
 #pragma once
 
+#include "typedef.h"
+#include "SaveData.h"
+
 class inheritance
 {
 protected:
@@ -9,10 +12,10 @@ protected:
 	u8* hash_crypt = nullptr;
 	SaveFileBlocks* fileData = nullptr;
 public:
-	virtual void run_process()
-	{
-		return;
-	}
-	
+	inheritance() = default;
+	virtual ~inheritance() = default;
+
+	virtual void run_process(){}
+
 	void create_hash_for_decryption();
 };

@@ -1,4 +1,3 @@
-#include "PreHeader.h"
 #include "inheritance.h"
 
 void inheritance::create_hash_for_decryption()

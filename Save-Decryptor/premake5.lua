@@ -5,9 +5,6 @@ project "Save-Decryptor"
    targetdir ("%{wks.location}/bin/" .. outputdir)
    objdir ("%{wks.location}/bin/intermediates/" .. outputdir .. "/%{prj.name}")
 
-   pchheader "PreHeader.h"
-   pchsource "src/PreHeader.cpp"
-
    files
    {
        "src/**.h",

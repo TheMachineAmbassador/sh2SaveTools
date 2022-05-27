@@ -4,7 +4,7 @@
 namespace file_operations {
 
     template <typename DT>
-	void read_file(DT &file_data,const char* file_name)
+	bool read_file(DT &file_data,const char* file_name)
 	{
         if (std::ifstream input_file(file_name, std::ios::binary | std::ios::in); input_file.is_open())
         {
@@ -13,12 +13,14 @@ namespace file_operations {
         }
         else
         {
-            std::cout << "Can't read" << std::endl;
+            std::cout << "There is an issue while reading file" << std::endl;
+            return false;
         }
+        return true;
 	}
 
     template <typename DT>
-	void write_file(DT &file_data, const std::string& file_name)
+	bool write_file(DT &file_data, const std::string& file_name)
 	{
         if (std::ofstream output_file(file_name, std::ios::out | std::ios::binary); output_file.is_open())
         {
@@ -27,7 +29,9 @@ namespace file_operations {
         }
         else
         {
-            std::cout << "Can't write" << std::endl;
+            std::cout << "There is an issue while writing file" << std::endl;
+            return false;
         }
+        return true;
 	}
 }

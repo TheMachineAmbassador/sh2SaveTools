@@ -1,6 +1,7 @@
 #pragma once
 
 #include "inheritance.h"
+#include <SaveData.h>
 
 class Decrypt : public inheritance
 {
@@ -12,4 +13,8 @@ public:
 	void run_process() override;
 
 	Decrypt(SaveFileBlocks* file, SaveFileThings* save_file_things);
+	~Decrypt() override
+	{
+		delete buffer_to_hash;
+	}
 };
