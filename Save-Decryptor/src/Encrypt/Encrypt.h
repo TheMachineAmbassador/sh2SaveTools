@@ -11,7 +11,7 @@ protected:
 public:
 	void run_process() override;
 
-	Encrypt(SaveFileBlocks* file, SaveFileThings* save_file_things);
+	Encrypt(SaveFileBlocks& file, SaveFileThings* save_file_things);
 	~Encrypt() override
 	{
 		delete buffer_to_hash;

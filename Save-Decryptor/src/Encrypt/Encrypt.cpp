@@ -25,8 +25,9 @@ void Encrypt::encrypt_data() const
 			}
 		}
 
-		saveFileThings->DAT_0093c008 = saveFileThings->DAT_0093c008 - (file_data_buffer[0] & 0xff) - (file_data_buffer[0] >> 8 & 0xff) - ((file_data_buffer[0] >> 8 & 0xff00) >> 8) - (file_data_buffer[0] >> 0x18)
-			- (file_data_buffer[1] & 0xff) - (file_data_buffer[1] >> 8 & 0xff) - (file_data_buffer[1] >> 0x10 & 0xff) - (file_data_buffer[1] >> 0x18);
+		saveFileThings->DAT_0093c008 = saveFileThings->DAT_0093c008 - 
+			(file_data_buffer[0] & 0xff) - (file_data_buffer[0] >> 8 & 0xff) - ((file_data_buffer[0] >> 8 & 0xff00) >> 8) - (file_data_buffer[0] >> 0x18) - 
+			(file_data_buffer[1] & 0xff) - (file_data_buffer[1] >> 8 & 0xff) - (file_data_buffer[1] >> 0x10 & 0xff) - (file_data_buffer[1] >> 0x18);
 
 		decrypt_end_counter = decrypt_end_counter - 1;
 		if (decrypt_end_counter < 1) {
@@ -35,9 +36,9 @@ void Encrypt::encrypt_data() const
 		file_data_buffer = file_data_buffer + 2;
 	}
 
-	const s8 bVar4 = static_cast<s8>(saveFileThings->hash_location) & 0x1f;
-	const u32 get_encryption_spot = saveFileThings->hash_location - saveFileThings->DAT_0093c008 - saveFileThings->uVar10;
-	const s8 bVar3 = static_cast<s8>(saveFileThings->DAT_0093c008) & 0x1f;
+	const u8 bVar4 = static_cast<s8>(saveFileThings->hash_location) & 0x1f;
+	const u32 get_encryption_spot = (saveFileThings->hash_location - saveFileThings->DAT_0093c008) - saveFileThings->uVar10;
+	const u8 bVar3 = static_cast<s8>(saveFileThings->DAT_0093c008) & 0x1f;
 
 	fileData->file_header = saveFileThings->uVar10 >> (0x20 - bVar4 & 0x1f) | saveFileThings->uVar10 << bVar4;
 	fileData->save_file_after_four_byte = get_encryption_spot >> (0x20 - bVar4 & 0x1f) | get_encryption_spot << bVar4;
@@ -91,8 +92,12 @@ void Encrypt::copy_first_header_bytes_to_last() const
 	u32* save_data_buffer = &fileData->save_file_after_eight_byte;
 	s32 counter = 0x155;
 	do {
-		fileData->last_byte_after_four_byte = save_data_buffer[-2] ^ save_data_buffer[2] ^ fileData->last_byte_after_four_byte ^ *save_data_buffer;
-		fileData->last_four_byte_of_save = save_data_buffer[-1] ^ save_data_buffer[3] ^ fileData->last_four_byte_of_save ^ save_data_buffer[1];
+		fileData->last_byte_after_four_byte =
+			save_data_buffer[-2] ^ save_data_buffer[2] ^ fileData->last_byte_after_four_byte ^
+			*save_data_buffer;
+		fileData->last_four_byte_of_save =
+			save_data_buffer[-1] ^ save_data_buffer[3] ^ fileData->last_four_byte_of_save ^ save_data_buffer[1]
+			;
 		save_data_buffer = save_data_buffer + 6;
 		counter = counter + -1;
 	} while (counter != 0);
@@ -106,9 +111,9 @@ void Encrypt::run_process()
 	copy_first_header_bytes_to_last();
 }
 
-Encrypt::Encrypt(SaveFileBlocks* file, SaveFileThings* save_file_things)
+Encrypt::Encrypt(SaveFileBlocks &file, SaveFileThings* save_file_things)
 {
-	fileData = file;
+	fileData = &file;
 	this->saveFileThings = save_file_things;
 
 	saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;

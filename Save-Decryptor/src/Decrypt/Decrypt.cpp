@@ -37,7 +37,7 @@ void Decrypt::get_hash() const
             hash_location = hash_location + 1;
         }
         uVar10 = uVar10 + (file_data_buffer[0] & 0xff) + (file_data_buffer[0] >> 8 & 0xff) + ((file_data_buffer[0] >> 8 & 0xff00) >> 8) + (file_data_buffer[0] >> 0x18)
-            + (file_data_buffer[1] & 0xff) + (file_data_buffer[1] >> 8 & 0xff) + (file_data_buffer[1] >> 0x10 & 0xff) + (file_data_buffer[1] >> 0x18);
+						+ (file_data_buffer[1] & 0xff) + (file_data_buffer[1] >> 8 & 0xff) + (file_data_buffer[1] >> 0x10 & 0xff) + (file_data_buffer[1] >> 0x18);
 
         counter_loop = counter_loop - 1;
         if (counter_loop < 1) break;
@@ -107,9 +107,9 @@ void Decrypt::run_process()
     decrypt_save();
 }
 
-Decrypt::Decrypt(SaveFileBlocks* file, SaveFileThings* save_file_things)
+Decrypt::Decrypt(SaveFileBlocks &file, SaveFileThings* save_file_things)
 {
-    this->fileData = file;
+    this->fileData = &file;
     this->saveFileThings = save_file_things;
 
     this->saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;

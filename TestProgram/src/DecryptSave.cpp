@@ -14,24 +14,30 @@
 Decrypt* decrypt;
 Encrypt* encrypt;
 
+// Reference: https://stackoverflow.com/a/6417908
+std::string remove_extension(const std::string& filename) {
+	const size_t lastdot = filename.find_last_of('.');
+	if (lastdot == std::string::npos) return filename;
+	return filename.substr(0, lastdot);
+}
+
 void choose(SaveFileBlocks &file_data, const char* file_name, const u8 type)
 {
 	SaveFileThings saveThings{};
 	std::string name_buffer = file_name;
 	std::string hash_name = file_name;
-	hash_name = hash_name + ".hashkey";
 	
 	switch (type)
 	{
 	case 1:
-		decrypt = new Decrypt(&file_data, &saveThings);
+		decrypt = new Decrypt(file_data, &saveThings);
 		decrypt->run_process();
 		name_buffer = name_buffer + ".decrypted";
 		if(!file_operations::write_file(file_data, name_buffer))
 		{
 			break;
 		}
-		hash_name = name_buffer + ".hashkey";
+		hash_name = hash_name + ".hashkey";
 		if(!file_operations::write_file(saveThings, hash_name))
 		{
 			break;
@@ -41,24 +47,28 @@ void choose(SaveFileBlocks &file_data, const char* file_name, const u8 type)
 		LOG_STRING_NL("Successfully Decrypted!");
 		break;
 	case 2:
-		if(!file_operations::read_file(saveThings, hash_name.c_str()))
+		hash_name = remove_extension(hash_name);
+		hash_name = hash_name + ".hashkey";
+		if(!file_operations::read_file(saveThings, hash_name))
 		{
 			break;
 		}
 
-		encrypt = new Encrypt(&file_data, &saveThings);
-
+		encrypt = new Encrypt(file_data, &saveThings);
 		encrypt->run_process();
-		decrypt = new Decrypt(&file_data,&saveThings);
+		decrypt = new Decrypt(file_data,&saveThings);
 		decrypt->run_process();
 		encrypt->run_process();
 
+		name_buffer = remove_extension(name_buffer);
 		name_buffer = name_buffer + ".encrypted";
 		if(file_operations::write_file(file_data, name_buffer))
 		{
 			break;
 		}
 
+		delete encrypt;
+		delete decrypt;
 		LOG_STRING_NL("Successfully Encrypted!");
 		break; 
 	default:
