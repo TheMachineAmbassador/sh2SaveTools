@@ -1,4 +1,4 @@
-workspace "sh2SaveDecryptor"
+workspace "sh2SaveTools"
     architecture "x86"
     startproject "TestProgram"
     configurations { "Debug", "Release" }

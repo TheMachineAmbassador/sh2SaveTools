@@ -1,4 +1,5 @@
 #include "Encrypt.h"
+
 #include <iostream>
 
 void Encrypt::encrypt_data() const
@@ -47,7 +48,7 @@ void Encrypt::encrypt_data() const
 	saveFileThings->INT_0093c000 = saveFileThings->hash_location % 0x3f8;
 	saveFileThings->counter_for_loops = saveFileThings->hash_location % 0x3f8;
 
-#if _DEBUG
+#if DEBUG
 	std::cout << "Hash location: " << saveFileThings->hash_location << std::endl;
 	std::cout << "0x93c008: " << saveFileThings->DAT_0093c008 << std::endl;
 	std::cout << "uVar10: " << saveFileThings->uVar10 << std::endl;
@@ -62,18 +63,17 @@ void Encrypt::encrypt_data() const
 void Encrypt::move_hashes_to_first_byte() const
 {
 	u32* file_data_buffer = saveFileThings->points_To_Save_File_After_8_Byte;
-	u32* file_data_buffer2 = saveFileThings->points_To_Save_File_After_8_Byte;
-	u32 counter = saveFileThings->counter_for_loops;
-	if (0 < static_cast<s32>(saveFileThings->counter_for_loops)) {
-		do {
-			file_data_buffer = file_data_buffer2 + -2;
-			counter = counter - 1;
-			file_data_buffer2[8] = file_data_buffer2[-2];
-			file_data_buffer2[9] = file_data_buffer2[-1];
-			file_data_buffer2 = file_data_buffer;
-		} while (counter != 0);
+
+	if (0 < saveFileThings->counter_for_loops) {
+		for(int i = 0;i<saveFileThings->counter_for_loops;i++)
+		{
+			file_data_buffer = file_data_buffer - 2;
+			file_data_buffer[8] = file_data_buffer[-2];
+			file_data_buffer[9] = file_data_buffer[-1];
+		}
 	}
-	*file_data_buffer = saveFileThings->hash_first_part[0];
+
+	file_data_buffer[0] = saveFileThings->hash_first_part[0];
 	file_data_buffer[1] = saveFileThings->hash_first_part[1];
 	file_data_buffer[2] = saveFileThings->hash_first_part[2];
 	file_data_buffer[3] = saveFileThings->hash_first_part[3];
@@ -92,12 +92,8 @@ void Encrypt::copy_first_header_bytes_to_last() const
 	u32* save_data_buffer = &fileData->save_file_after_eight_byte;
 	s32 counter = 0x155;
 	do {
-		fileData->last_byte_after_four_byte =
-			save_data_buffer[-2] ^ save_data_buffer[2] ^ fileData->last_byte_after_four_byte ^
-			*save_data_buffer;
-		fileData->last_four_byte_of_save =
-			save_data_buffer[-1] ^ save_data_buffer[3] ^ fileData->last_four_byte_of_save ^ save_data_buffer[1]
-			;
+		fileData->last_byte_after_four_byte =	save_data_buffer[-2] ^ save_data_buffer[2] ^ fileData->last_byte_after_four_byte ^	save_data_buffer[0];
+		fileData->last_four_byte_of_save =		save_data_buffer[-1] ^ save_data_buffer[3] ^ fileData->last_four_byte_of_save ^		save_data_buffer[1];
 		save_data_buffer = save_data_buffer + 6;
 		counter = counter + -1;
 	} while (counter != 0);

@@ -14,14 +14,15 @@
 Decrypt* decrypt;
 Encrypt* encrypt;
 
-// Reference: https://stackoverflow.com/a/6417908
-std::string remove_extension(const std::string& filename) {
-	const size_t lastdot = filename.find_last_of('.');
-	if (lastdot == std::string::npos) return filename;
-	return filename.substr(0, lastdot);
+void printHelp()
+{
+	LOG_STRING_NL("Usage: TestProgram.exe [Options] [FileName]");
+	LOG_STRING_NL("--decrypt - For Decrypting Save Files");
+	LOG_STRING_NL("--encrypt - For Re-Encrypting Save Files");
+	LOG_STRING_NL("Or you can simply hover your files on to exe");
 }
 
-void choose(SaveFileBlocks &file_data, const char* file_name, const u8 type)
+void StartSaveProcess(SaveFileBlocks &file_data, const char* file_name, const u8 type)
 {
 	SaveFileThings saveThings{};
 	std::string name_buffer = file_name;
@@ -47,7 +48,7 @@ void choose(SaveFileBlocks &file_data, const char* file_name, const u8 type)
 		LOG_STRING_NL("Successfully Decrypted!");
 		break;
 	case 2:
-		hash_name = remove_extension(hash_name);
+		hash_name = file_operations::remove_extension(hash_name);
 		hash_name = hash_name + ".hashkey";
 		if(!file_operations::read_file(saveThings, hash_name))
 		{
@@ -59,8 +60,7 @@ void choose(SaveFileBlocks &file_data, const char* file_name, const u8 type)
 		decrypt = new Decrypt(file_data,&saveThings);
 		decrypt->run_process();
 		encrypt->run_process();
-
-		name_buffer = remove_extension(name_buffer);
+		name_buffer = file_operations::remove_extension(name_buffer);
 		name_buffer = name_buffer + ".encrypted";
 		if(file_operations::write_file(file_data, name_buffer))
 		{
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 			{
 				return 0;
 			}
-			choose(file_data, argv[2], DECRYPT_FILE);
+			StartSaveProcess(file_data, argv[2], DECRYPT_FILE);
 		}
 		if (arg1 == "--encrypt" || arg1 == "-e")
 		{
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 			{
 				return 0;
 			}
-			choose(file_data, argv[2], ENCRYPT_FILE);
+			StartSaveProcess(file_data, argv[2], ENCRYPT_FILE);
 		}
 	}
 	else if(argc == 2)
@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
 			{
 				return 0;
 			}
-			choose(file_data, argv[1], DECRYPT_FILE);
+			StartSaveProcess(file_data, argv[1], DECRYPT_FILE);
 		}
 		else if(answer == 2)
 		{
@@ -123,22 +123,16 @@ int main(int argc, char* argv[])
 			{
 				return 0;
 			}
-			choose(file_data, argv[1], ENCRYPT_FILE);
+			StartSaveProcess(file_data, argv[1], ENCRYPT_FILE);
 		}
 		else
 		{
-			LOG_STRING_NL("Usage: TestProgram.exe [Options] [FileName]");
-			LOG_STRING_NL("--decrypt - For Decrypting Save Files");
-			LOG_STRING_NL("--encrypt - For Re-Encrypting Save Files");
-			LOG_STRING_NL("Or you can simply hover your files on to exe");
+			printHelp();
 		}
 	}
 	else
 	{
-		LOG_STRING_NL("Usage: TestProgram.exe [Options] [FileName]");
-		LOG_STRING_NL("--decrypt - For Decrypting Save Files");
-		LOG_STRING_NL("--encrypt - For Re-Encrypting Save Files");
-		LOG_STRING_NL("Or you can simply hover your files on to exe");
+		printHelp();
 	}
 
 	#if _WIN32
