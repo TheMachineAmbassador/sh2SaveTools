@@ -11,15 +11,31 @@
 #define DECRYPT_FILE 1
 #define ENCRYPT_FILE 2
 
-Decrypt* decrypt;
-Encrypt* encrypt;
-
 void printHelp()
 {
 	LOG_STRING_NL("Usage: TestProgram.exe [Options] [FileName]");
 	LOG_STRING_NL("--decrypt - For Decrypting Save Files");
 	LOG_STRING_NL("--encrypt - For Re-Encrypting Save Files");
 	LOG_STRING_NL("Or you can simply hover your files on to exe");
+}
+
+// Reference: https://stackoverflow.com/a/6417908
+inline std::string remove_extension(const std::string& filename) {
+	const size_t lastdot = filename.find_last_of('.');
+	if (lastdot == std::string::npos) return filename;
+	return filename.substr(0, lastdot);
+}
+
+void EncryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& save_things)
+{
+	const auto encrypt = std::make_unique<Encrypt>(file_data, save_things);
+	encrypt->run_process();
+}
+
+void DecryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings)
+{
+	const auto decrypt = std::make_unique<Decrypt>(file_data,&saveThings);
+	decrypt->run_process();
 }
 
 void StartSaveProcess(SaveFileBlocks &file_data, const char* file_name, const u8 type)
@@ -31,8 +47,7 @@ void StartSaveProcess(SaveFileBlocks &file_data, const char* file_name, const u8
 	switch (type)
 	{
 	case 1:
-		decrypt = new Decrypt(file_data, &saveThings);
-		decrypt->run_process();
+		DecryptSH2Save(file_data, saveThings);
 		name_buffer = name_buffer + ".decrypted";
 		if(!file_operations::write_file(file_data, name_buffer))
 		{
@@ -44,31 +59,26 @@ void StartSaveProcess(SaveFileBlocks &file_data, const char* file_name, const u8
 			break;
 		}
 
-		delete decrypt;
 		LOG_STRING_NL("Successfully Decrypted!");
 		break;
 	case 2:
-		hash_name = file_operations::remove_extension(hash_name);
+		hash_name = remove_extension(hash_name);
 		hash_name = hash_name + ".hashkey";
 		if(!file_operations::read_file(saveThings, hash_name))
 		{
 			break;
 		}
 
-		encrypt = new Encrypt(file_data, &saveThings);
-		encrypt->run_process();
-		decrypt = new Decrypt(file_data,&saveThings);
-		decrypt->run_process();
-		encrypt->run_process();
-		name_buffer = file_operations::remove_extension(name_buffer);
+		EncryptSH2Save(file_data, saveThings);
+		DecryptSH2Save(file_data, saveThings);
+		EncryptSH2Save(file_data, saveThings);
+		name_buffer = remove_extension(name_buffer);
 		name_buffer = name_buffer + ".encrypted";
 		if(file_operations::write_file(file_data, name_buffer))
 		{
 			break;
 		}
 
-		delete encrypt;
-		delete decrypt;
 		LOG_STRING_NL("Successfully Encrypted!");
 		break; 
 	default:
