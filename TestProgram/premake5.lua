@@ -1,5 +1,5 @@
 project "TestProgram"
-    kind "ConsoleApp"
+    kind "StaticLib"
     
     language "C++"
 
@@ -27,7 +27,9 @@ project "TestProgram"
         cppdialect "C++17"
         staticruntime "On"
         systemversion "latest"
-
+   filter "system:linux"
+        cppdialect "C++17"
+	
    filter { "configurations:Debug" }
       defines { "DEBUG" }
       symbols "On"

@@ -1,5 +1,5 @@
-project "Save-Decryptor"
-   kind "StaticLib"
+project "ConsoleApp"
+   kind "ConsoleApp"
    language "C++"
    
    targetdir ("%{wks.location}/bin/" .. outputdir)
@@ -8,14 +8,21 @@ project "Save-Decryptor"
    files
    {
        "src/**.h",
-       "src/**.cpp"
+       "src/**.cpp",
+       "src/**.hpp"
    }
 
    includedirs
    {
-       "src"
+	"%{wks.location}/Save-Decryptor/src",
+        "%{wks.location}/TestProgram/src",
    }
 
+   links
+   {
+      "Save-Decryptor",
+      "TestProgram"
+   }
    filter "system:windows"
         cppdialect "C++17"
         staticruntime "On"

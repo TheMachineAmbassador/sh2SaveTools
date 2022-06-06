@@ -18,3 +18,4 @@ workspace "sh2SaveTools"
 
 include "Save-Decryptor"
 include "TestProgram"
+include "ConsoleApp"

@@ -1,10 +1,12 @@
 #include "Decrypt.h"
 
 #include <cstring>
-#include "typedef.h"
 
 void Decrypt::get_hash() const
 {
+    this->saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;
+    this->saveFileThings->counter_for_loops = 0x3fd;
+
     u32* file_data_buffer = saveFileThings->points_To_Save_File_After_8_Byte;
 
     u32 counter_loop = saveFileThings->counter_for_loops;
@@ -111,7 +113,4 @@ Decrypt::Decrypt(SaveFileBlocks &file, SaveFileThings* save_file_things)
 {
     this->fileData = &file;
     this->saveFileThings = save_file_things;
-
-    this->saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;
-    this->saveFileThings->counter_for_loops = 0x3fd;
 }

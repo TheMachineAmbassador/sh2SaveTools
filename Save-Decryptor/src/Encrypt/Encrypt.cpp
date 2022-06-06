@@ -4,6 +4,9 @@
 
 void Encrypt::encrypt_data() const
 {
+	saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;
+	saveFileThings->counter_for_loops = 0x3f8;
+
 	int index_multiplier1 = 0;
 	int index_multiplier2 = 0;
 
@@ -65,7 +68,7 @@ void Encrypt::move_hashes_to_first_byte() const
 	u32* file_data_buffer = saveFileThings->points_To_Save_File_After_8_Byte;
 
 	if (0 < saveFileThings->counter_for_loops) {
-		for(int i = 0;i<saveFileThings->counter_for_loops;i++)
+		for(u32 i = 0;i<saveFileThings->counter_for_loops;i++)
 		{
 			file_data_buffer = file_data_buffer - 2;
 			file_data_buffer[8] = file_data_buffer[-2];
@@ -107,11 +110,8 @@ void Encrypt::run_process()
 	copy_first_header_bytes_to_last();
 }
 
-Encrypt::Encrypt(SaveFileBlocks &file, SaveFileThings &save_file_things)
+Encrypt::Encrypt(SaveFileBlocks &file, SaveFileThings* save_file_things)
 {
-	fileData = &file;
-	this->saveFileThings = &save_file_things;
-
-	saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;
-	saveFileThings->counter_for_loops = 0x3f8;
+	fileData = &file;	
+	this->saveFileThings = save_file_things;
 }
