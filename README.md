@@ -27,9 +27,6 @@ You can use a memory editor to edit datas. There is a lot of tutorials on youtub
 
 Or you can watch this video to learn hex editing: https://www.youtube.com/watch?v=SYlgoNQpRWI
 
-## WARNING
-Make sure you backup save data, i didn't make any checksum correction so it may harm your save data.
-
 ## TODO
 
 * There is a bug on encrypt functions i didn't recognize because of that i had to call decryption and encryption functions twice while encrypting.

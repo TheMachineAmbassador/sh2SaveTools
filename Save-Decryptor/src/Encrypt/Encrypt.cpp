@@ -4,7 +4,7 @@
 
 void Encrypt::encrypt_data() const
 {
-	saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;
+	saveFileThings->points_To_Save_File_After_8_Byte = &fileData->gameMemory.saveType;
 	saveFileThings->counter_for_loops = 0x3f8;
 
 	int index_multiplier1 = 0;
@@ -47,7 +47,7 @@ void Encrypt::encrypt_data() const
 	fileData->file_header = saveFileThings->uVar10 >> (0x20 - bVar4 & 0x1f) | saveFileThings->uVar10 << bVar4;
 	fileData->save_file_after_four_byte = get_encryption_spot >> (0x20 - bVar4 & 0x1f) | get_encryption_spot << bVar4;
 	fileData->UINT_009361f8 = saveFileThings->uVar10 * saveFileThings->hash_location >> (0x20 - bVar3 & 0x1f) | saveFileThings->uVar10 * saveFileThings->hash_location << bVar3;
-	saveFileThings->points_To_Save_File_After_8_Byte = reinterpret_cast<u32*>(reinterpret_cast<s32>(fileData->save_data) + 0x1fbc);
+	saveFileThings->points_To_Save_File_After_8_Byte = fileData->UINT_ARRAY_009361d0;
 	saveFileThings->INT_0093c000 = saveFileThings->hash_location % 0x3f8;
 	saveFileThings->counter_for_loops = saveFileThings->hash_location % 0x3f8;
 
@@ -92,11 +92,11 @@ void Encrypt::copy_first_header_bytes_to_last() const
 {
 	fileData->last_byte_after_four_byte = 0;
 	fileData->last_four_byte_of_save = 0;
-	u32* save_data_buffer = &fileData->save_file_after_eight_byte;
+	u32* save_data_buffer = &fileData->gameMemory.saveType;
 	s32 counter = 0x155;
 	do {
 		fileData->last_byte_after_four_byte =	save_data_buffer[-2] ^ save_data_buffer[2] ^ fileData->last_byte_after_four_byte ^	save_data_buffer[0];
-		fileData->last_four_byte_of_save =		save_data_buffer[-1] ^ save_data_buffer[3] ^ fileData->last_four_byte_of_save ^		save_data_buffer[1];
+		fileData->last_four_byte_of_save =		save_data_buffer[-1] ^ save_data_buffer[3] ^ fileData->last_four_byte_of_save	 ^	save_data_buffer[1];
 		save_data_buffer = save_data_buffer + 6;
 		counter = counter + -1;
 	} while (counter != 0);

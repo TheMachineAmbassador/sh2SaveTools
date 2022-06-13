@@ -4,7 +4,7 @@
 
 void Decrypt::get_hash() const
 {
-    this->saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;
+    this->saveFileThings->points_To_Save_File_After_8_Byte = &fileData->gameMemory.saveType;
     this->saveFileThings->counter_for_loops = 0x3fd;
 
     u32* file_data_buffer = saveFileThings->points_To_Save_File_After_8_Byte;
@@ -47,7 +47,7 @@ void Decrypt::get_hash() const
     }
 
     u32* hold_hash_buffer = saveFileThings->hash_first_part;
-    file_data_buffer = reinterpret_cast<u32*>(fileData->save_data + hash_location % 0x3f8 * -8 + 0x1fbc);
+    file_data_buffer = fileData->UINT_ARRAY_009361d0 + (hash_location % 0x3f8) * -2;
     saveFileThings->points_To_Save_File_After_8_Byte = file_data_buffer;
     memcpy(hold_hash_buffer, file_data_buffer, 0x28);
     saveFileThings->counter_for_loops = hash_location % 0x3f8;
@@ -66,7 +66,7 @@ void Decrypt::create_hash_list() const
             saveFileThings->points_To_Save_File_After_8_Byte = saveFileThings->points_To_Save_File_After_8_Byte + 1;
         }
     }
-    saveFileThings->points_To_Save_File_After_8_Byte = &fileData->save_file_after_eight_byte;
+    saveFileThings->points_To_Save_File_After_8_Byte = &fileData->gameMemory.saveType;
     saveFileThings->counter_for_loops = 0x3f8;
 }
 
