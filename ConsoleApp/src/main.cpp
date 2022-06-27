@@ -13,7 +13,7 @@ void printHelp()
 
 bool Decrypt_Func(SaveFileBlocks &file_data, SaveFileThings &saveThings, std::string file_name)
 {
-	if (!DecryptSH2Save(file_data, saveThings, file_name))
+	if (!DecryptSH2Save(file_data, saveThings))
 	{
 		LOG_STRING_NL("Invalid File!");
 		return false;
@@ -44,7 +44,7 @@ bool Encrypt_Func(SaveFileBlocks& file_data, SaveFileThings& saveThings, std::st
 
 	if (file_operations::read_file(saveThings, hash_name))
 	{
-		if (!EncryptSH2Save(file_data, saveThings, file_name))
+		if (!EncryptSH2Save(file_data, saveThings))
 		{
 			LOG_STRING_NL("Invalid File!");
 			return false;
