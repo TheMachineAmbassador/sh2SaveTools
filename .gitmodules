@@ -1,4 +1,4 @@
 [submodule "3rdparty/imgui"]
 	path = 3rdparty/imgui
-	url = https://github.com/TheMachineAmbassador/imgui.git
+	url = ../../TheMachineAmbassador/imgui.git
 	branch = docking
