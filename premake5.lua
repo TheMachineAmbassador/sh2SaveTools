@@ -16,6 +16,10 @@ workspace "sh2SaveTools"
 		"MultiProcessorCompile"
 	}
 
+group "3rdparty"
+	include "3rdparty/imgui"
+group ""
 include "Save-Decryptor"
 include "TestProgram"
 include "ConsoleApp"
+include "SaveEditorGUI"

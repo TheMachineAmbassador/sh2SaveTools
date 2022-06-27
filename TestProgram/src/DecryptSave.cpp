@@ -17,15 +17,19 @@ bool check_file(GameMemory gameMemory)
 		(((0.0 <= gameMemory.field28_0x50 && ((u8)gameMemory.field16_0x32 < 0x65)) && ((0.0 <= gameMemory.field33_0x9c &&
 		(((-2 < (char)gameMemory.field18_0x35 && ((char)gameMemory.field18_0x35 < '\x03')) && (0.0 <= gameMemory.field29_0x54)))))))) &&
 		((0.0 <= gameMemory.field30_0x58 && (0.0 <= gameMemory.field31_0x5c)))) && (((gameMemory.maria_stuff_i_guess[0] < 5 &&
-		(((gameMemory.maria_stuff_i_guess[1] < 4 && (gameMemory.items[7] < 1000)) && ((gameMemory.items[8] < 1000 &&
-		(((gameMemory.items[9] < 1000 && (gameMemory.items[10] < 0xb)) && (gameMemory.items[11] < 1000)))))))) &&
-		(((gameMemory.items[12] < 7 && (gameMemory.items[13] < 1000)) && (gameMemory.items[14] < 5)))))) && ((gameMemory.items[15] < 1000 && (gameMemory.items[18] < 9)))) {
+			(((gameMemory.maria_stuff_i_guess[1] < 4 && (gameMemory.item_ammos[0] < 1000)) &&
+				((gameMemory.item_ammos[1] < 1000 &&
+					(((gameMemory.item_ammos[2] < 1000 && (gameMemory.item_ammos[3] < 0xb)) &&
+						(gameMemory.item_ammos[4] < 1000)))))))) &&
+			(((gameMemory.item_ammos[5] < 7 && (gameMemory.item_ammos[6] < 1000)) &&
+				(gameMemory.item_ammos[7] < 5)))))) &&
+		((gameMemory.item_ammos[8] < 1000 && (gameMemory.item_ammos[11] < 9)))) {
 			return false;
 		}
 	return true;
 }
 
-bool DecryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings, std::string file_name)
+bool DecryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings)
 {
 	if (check_file(file_data.gameMemory))
 	{
@@ -37,7 +41,7 @@ bool DecryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings, std::
 	return false;
 }
 
-bool EncryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings, std::string name_buffer)
+bool EncryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings)
 {
 	if (!check_file(file_data.gameMemory))
 	{

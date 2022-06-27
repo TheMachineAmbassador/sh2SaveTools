@@ -93,7 +93,9 @@ struct GameMemory {
     float field33_0x9c;
     u8 maria_stuff_i_guess[32];
     uint game_flag[296];
-    u16 items[30];
+    u16 items[7];
+    u16 item_ammos[13];
+    u16 dunno[10];
     SaveData saveData;
     uint field38_0x194c[24];
     uint field39_0x19ac[389];
