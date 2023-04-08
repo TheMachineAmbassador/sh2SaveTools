@@ -6,11 +6,12 @@
 class inheritance
 {
 protected:
-	SaveFileThings* saveFileThings = nullptr;
+	SaveFileThings* saveFileThings = new SaveFileThings();
 	u32* buffer_to_hash = nullptr;
 	u8 HASH_BYTE{};
 	u8* hash_crypt = nullptr;
 	SaveFileBlocks* fileData = nullptr;
+
 public:
 	inheritance() = default;
 	virtual ~inheritance() = default;

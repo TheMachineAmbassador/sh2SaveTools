@@ -110,8 +110,7 @@ void Encrypt::run_process()
 	copy_first_header_bytes_to_last();
 }
 
-Encrypt::Encrypt(SaveFileBlocks &file, SaveFileThings* save_file_things)
+Encrypt::Encrypt(SaveFileBlocks &file)
 {
 	fileData = &file;	
-	this->saveFileThings = save_file_things;
 }

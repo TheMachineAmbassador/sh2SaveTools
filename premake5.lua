@@ -1,6 +1,6 @@
 workspace "sh2SaveTools"
     architecture "x86"
-    startproject "TestProgram"
+    startproject "SaveEditorGUI"
     configurations { "Debug", "Release" }
 
     outputdir = "%{cfg.system}-%{cfg.buildcfg}"
@@ -18,8 +18,9 @@ workspace "sh2SaveTools"
 
 group "3rdparty"
 	include "3rdparty/imgui"
+	include "3rdparty/GLFW"
+	include "3rdparty/Glad"
 group ""
 include "Save-Decryptor"
 include "TestProgram"
-include "ConsoleApp"
 include "SaveEditorGUI"

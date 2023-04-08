@@ -12,7 +12,7 @@ protected:
 public:
 	void run_process() override;
 
-	Decrypt(SaveFileBlocks &file, SaveFileThings* save_file_things);
+	Decrypt(SaveFileBlocks &file);
 	~Decrypt() override
 	{
 		delete buffer_to_hash;

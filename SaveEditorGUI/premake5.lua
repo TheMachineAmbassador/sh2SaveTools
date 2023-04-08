@@ -1,6 +1,7 @@
 project "SaveEditorGUI"
    kind "WindowedApp"
    language "C++"
+   staticruntime "off"
    
    targetdir ("%{wks.location}/bin/" .. outputdir)
    objdir ("%{wks.location}/bin/intermediates/" .. outputdir .. "/%{prj.name}")
@@ -12,25 +13,28 @@ project "SaveEditorGUI"
        "src/**.hpp"
    }
 
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
+	}
+
    includedirs
    {
-	"%{wks.location}/3rdparty/imgui",
-	"%{wks.location}/3rdparty/glfw/include",
-	"%{wks.location}/Save-Decryptor/src",
-        "%{wks.location}/TestProgram/src",
-   }
-
-   libdirs
-   {
-       "%{wks.location}/3rdparty/glfw/lib-vc2022",
+	   "%{wks.location}/3rdparty/imgui",
+	   "%{wks.location}/3rdparty/GLFW/include",
+	   "%{wks.location}/Save-Decryptor/src",
+      "%{wks.location}/TestProgram/src",
+      "%{wks.location}/3rdparty/Glad/include"
    }
    links
    {
       "Save-Decryptor",
       "TestProgram",
+      "GLFW",
+      "Glad",
       "ImGui",
-      "glfw3_mt.lib",
-      "opengl32.lib"
+      "opengl32.lib",
    }
    filter "system:windows"
         cppdialect "C++17"
