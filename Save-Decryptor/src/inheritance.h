@@ -6,7 +6,7 @@
 class inheritance
 {
 protected:
-	SaveFileThings* saveFileThings = new SaveFileThings();
+	SaveFileThings* saveFileThings = nullptr;
 	u32* buffer_to_hash = nullptr;
 	u8 HASH_BYTE{};
 	u8* hash_crypt = nullptr;

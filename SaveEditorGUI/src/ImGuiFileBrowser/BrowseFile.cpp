@@ -1,6 +1,9 @@
 #include "BrowseFile.h"
 #include <Windows.h>
 
+SaveFileBlocks fileBlock;
+SaveFileThings saveThings;
+
 void BrowseFile::showFileMenu()
 {
     bool open = false, save = false;
@@ -25,16 +28,16 @@ void BrowseFile::showFileMenu()
         if (showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".dat"))
         {
             file_operations::read_file(fileBlock, selected_path);
-            DecryptSH2Save(fileBlock);
+            DecryptSH2Save(fileBlock, saveThings);
 
         }
         if (showFileDialog("Save File", imgui_addons::ImGuiFileBrowser::DialogMode::SAVE, ImVec2(700, 310), ".dat"))
         {
             if (!check_file(fileBlock.gameMemory))
             {
-                EncryptSH2Save(fileBlock);
+                EncryptSH2Save(fileBlock, saveThings);
                 file_operations::write_file(fileBlock, selected_path);
-                DecryptSH2Save(fileBlock);
+                DecryptSH2Save(fileBlock, saveThings);
             }
             else
             {

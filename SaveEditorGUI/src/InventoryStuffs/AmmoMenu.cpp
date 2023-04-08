@@ -2,7 +2,7 @@
 
 #include <DecryptSave.h>
 
-SaveFileBlocks fileBlock;
+extern SaveFileBlocks fileBlock;
 
 #define item_ammo_offset offsetof(SaveFileBlocks, gameMemory.item_ammos)
 

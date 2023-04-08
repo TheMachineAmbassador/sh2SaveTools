@@ -36,31 +36,31 @@ bool check_file(GameMemory gameMemory)
     return !isValid;
 }
 
-bool DecryptSH2Save(SaveFileBlocks& file_data)
+bool DecryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings)
 {
-	if (check_file(file_data.gameMemory))
-	{
-		const auto decrypt = std::make_unique<Decrypt>(file_data);
-		decrypt->run_process();
-		return true;
-	}
+    if (check_file(file_data.gameMemory))
+    {
+        const auto decrypt = std::make_unique<Decrypt>(file_data, &saveThings);
+        decrypt->run_process();
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-bool EncryptSH2Save(SaveFileBlocks& file_data)
+bool EncryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings)
 {
-	if (!check_file(file_data.gameMemory))
-	{
-		const auto encrypt = std::make_unique<Encrypt>(file_data);
-		const auto decrypt = std::make_unique<Decrypt>(file_data);
+    if (!check_file(file_data.gameMemory))
+    {
+        const auto encrypt = std::make_unique<Encrypt>(file_data, &saveThings);
+        const auto decrypt = std::make_unique<Decrypt>(file_data, &saveThings);
 
-		encrypt->run_process();
-		decrypt->run_process();
-		encrypt->run_process();
+        encrypt->run_process();
+        decrypt->run_process();
+        encrypt->run_process();
 
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }

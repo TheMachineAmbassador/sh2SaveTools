@@ -109,7 +109,8 @@ void Decrypt::run_process()
     decrypt_save();
 }
 
-Decrypt::Decrypt(SaveFileBlocks &file)
+Decrypt::Decrypt(SaveFileBlocks& file, SaveFileThings* save_file_things)
 {
     this->fileData = &file;
+    this->saveFileThings = save_file_things;
 }

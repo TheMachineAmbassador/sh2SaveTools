@@ -4,6 +4,6 @@
 #include "Encrypt/Encrypt.h"
 #include "Decrypt/Decrypt.h"
 
-bool DecryptSH2Save(SaveFileBlocks& file_data);
-bool EncryptSH2Save(SaveFileBlocks& file_data);
+bool DecryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings);
+bool EncryptSH2Save(SaveFileBlocks& file_data, SaveFileThings& saveThings);
 bool check_file(GameMemory gameMemory);
